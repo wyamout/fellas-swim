@@ -1,0 +1,146 @@
+{% assign url_parts = request.path | split: '/' %}
+{% assign page_handle = url_parts | last %}
+{% if page_handle == 'press' %}
+  <div class="blogs--archive--posts">
+    {% assign blog_handle = 'press' %}
+    {% assign blog = blogs[blog_handle] %}
+    {% for article in blog.articles offset: offset limit: limit %}
+      <div
+        class="
+          blogs--archive--single    {% if forloop.index0 > 5 %}
+            blog--archive--hidden
+          {% endif %}
+        "
+      >
+        <a href="{{ article.url }}" class="image-feature--wrapper image-anim--scale">
+          <div class="image-feature image-anim--wrapper lazyload-animation">
+            {% render 'responsive-image',
+              classes: 'image-feature--image',
+              image: article.image,
+              sizes: '768,1536,2048,3600'
+            %}
+          </div>
+        </a>
+        <a href="{{ article.url }}" class="blogs--archive--single--link">{{ article.title }}</a>
+      </div>
+    {% endfor %}
+  </div>
+{% elsif page_handle == 'journal' %}
+  <div class="blogs--archive--posts">
+    {% assign blog_handle = 'collaborations' %}
+    {% assign blog = blogs[blog_handle] %}
+    {% for article in blog.articles offset: offset limit: limit %}
+      <div
+        class="
+          blogs--archive--single {% if forloop.index0 > 5 %}
+            blog--archive--hidden
+          {% endif %}
+        "
+      >
+        <a href="{{ article.url }}" class="image-feature--wrapper image-anim--scale">
+          <div class="image-feature image-anim--wrapper lazyload-animation">
+            {% render 'responsive-image',
+              classes: 'image-feature--image',
+              image: article.image,
+              sizes: '768,1536,2048,3600'
+            %}
+          </div>
+        </a>
+        <a href="{{ article.url }}" class="blogs--archive--single--link">{{ article.title }}</a>
+        <p class="blogs--excerpt--single--link">{{ article.excerpt }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% elsif page_handle == 'campaigns' %}
+  <div class="blogs--archive--posts">
+    {% assign blog_handle = 'campaigns' %}
+    {% assign blog = blogs[blog_handle] %}
+    {% for article in blog.articles offset: offset limit: limit %}
+      <div
+        class="
+          blogs--archive--single {% if forloop.index0 > 5 %}
+            blog--archive--hidden
+          {% endif %}
+        "
+      >
+        <a href="{{ article.url }}" class="image-feature--wrapper image-anim--scale">
+          <div class="image-feature image-anim--wrapper lazyload-animation">
+            {% render 'responsive-image',
+              classes: 'image-feature--image',
+              image: article.image,
+              sizes: '768,1536,2048,3600'
+            %}
+          </div>
+        </a>
+        <a href="{{ article.url }}" class="blogs--archive--single--link">{{ article.title }}</a>
+        <p class="blogs--excerpt--single--link">{{ article.excerpt }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div
+    class="blogs--archive--posts"
+  >
+    {% for article in articles offset: offset limit: limit %}
+      <div
+        class="
+          blogs--archive--single {% if forloop.index0 > 5 %}
+            blog--archive--hidden
+          {% endif %}
+        "
+      >
+        <a href="{{ article.url }}" class="image-feature--wrapper image-anim--scale">
+          <div class="image-feature image-anim--wrapper lazyload-animation">
+            {% render 'responsive-image',
+              classes: 'image-feature--image',
+              image: article.image,
+              sizes: '768,1536,2048,3600'
+            %}
+          </div>
+        </a>
+        <a href="{{ article.url }}" class="blogs--archive--single--link">{{ article.title }}</a>
+        <p class="blogs--excerpt--single--link">{{ article.excerpt }}</p>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+<div class="finding-more-blogs" style="opacity: 0;">Finding more blogs...</div>
+
+<!-- thediep094 -->
+<script>
+ document.addEventListener('DOMContentLoaded', () => {
+    const blogHiddenClass = 'blog--archive--hidden';
+    const itemsToShow = 6; // Number of items to reveal at a time
+     const revealDelay = 500;
+     function revealItems() {
+      const hiddenItems = document.querySelectorAll(`.${blogHiddenClass}`);
+      const itemsToReveal = Math.min(itemsToShow, hiddenItems.length);
+      setTimeout(() => {
+        for (let i = 0; i < itemsToReveal; i++) {
+          hiddenItems[i].classList.remove(blogHiddenClass);
+        }
+
+        document.querySelector('.finding-more-blogs').style.opacity = 0
+
+        if (hiddenItems.length <= itemsToReveal) {
+          window.removeEventListener('scroll', checkScroll);
+        }
+      }, revealDelay);
+    }
+   
+
+    function checkScroll() {
+      // Check if the user has scrolled to the bottom of the page
+      if (window.innerHeight + window.scrollY + 50 >= document.documentElement.scrollHeight) {
+        revealItems();
+             document.querySelector('.finding-more-blogs').style.opacity = 1;
+      }
+    }
+
+    // Add scroll event listener
+    window.addEventListener('scroll', checkScroll);
+    // Initial call to reveal items if already scrolled to bottom
+    checkScroll();
+  });
+</script>
